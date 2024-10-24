@@ -6,18 +6,18 @@
     <title>Register Page</title>
 </head>
 <body>
-    <% if(errors.length){ %>
+    <% if(errors.length) {%>
         <div>
             <ul>
                 <% errors.forEach(err => {%>
                     <li><%= err.msg %></li>
-               <% }) %>
+                <%}); %>
             </ul>
         </div>
-        <% } %> 
-    <form action="/auth/register" method="post">
+    <%}%>
+    <form action="auth/register" method="post">
         <input type="text" placeholder="username" name="username">
-        <input type="text" placeholder="gmail" name="gmail">
+        <input type="gmail" placeholder="gmail" name="gmail"> 
         <input type="password" placeholder="password" name="pass">
         <input type="submit" value="Register" id="">
     </form>

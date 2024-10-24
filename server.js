@@ -4,18 +4,37 @@ const path=require('path');
 const methodOverride=require('method-override');
 const flash=require('connect-flash');
 const config=require('./config');
+const data=require('./sql_models/Data');
+const cookieParser=require('cookie-parser');
+const session=require('express-session');
+const passport=require('passport');
 require('dotenv').config;
 
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
-app.set('views',path.join(__dirname,'views'))
+app.use(cookieParser(process.env.Cookie_SECRET));
+app.set('views',path.join(__dirname,'views'));
 app.set('view engine','ejs');
 app.use(methodOverride('method'));
 
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true,
+    cookie:{expires:new Date(Date.now()+1000*3600*24*100)},
+}))
+
 app.use(flash());
+require('./passport/passport');
+app.use(passport.initialize());
+app.use(passport.session());
+app.use((req,res,next)=>{
+    res.locals={errors:req.flash("errors"),req};
+    next();
+})
 app.get('/',(req,res)=>{
     res.render('index');
-})
+});
 
 app.use('/',require('./routes/index'));
 
