@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+</head>
+<body>
+    <% if(errors.length){ %>
+        <div>
+            <ul>
+                <% errors.forEach(err => {%>
+                    <li><%= err.msg %></li>
+               <% }) %>
+            </ul>
+        </div>
+        <% } %> 
+    <form action="/auth/login" method="post">
+        <input type="text" placeholder="username" name="username">
+        <input type="gmail" placeholder="gamil" name="gamil">
+        <input type="password" placeholder="password" name="pass">
+        <input type="submit" value="login" id="">
+    </form>
+</body>
+</html>
