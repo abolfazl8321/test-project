@@ -1,13 +1,13 @@
 const express=require('express');
 const router=express.Router();
+const authDashboard=require('../routes/dashboard');
 const authRouter=require('./auth');
-const authDashboard=require('../routes/dashboard') ;
 const config = require('../config');
 
 router.use('/auth',authRouter);
-router.use('/dashboard',authDashboard)
+router.use('/dashboard',authDashboard);
 router.get('/logout',(req,res)=>{
-    req.logOut((err)=>{
+    req.logout((err)=>{
         if(err){
             return res.status(500).json({ message: "Error during logout." });
         }

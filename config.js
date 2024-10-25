@@ -1,4 +1,6 @@
 module.exports={
     port:3000,
-    debug:true
+    debug:true,
+    session_secret:'oidgjkfnviushniusHFFVISJ'
+
 }

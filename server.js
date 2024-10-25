@@ -4,11 +4,13 @@ const path=require('path');
 const methodOverride=require('method-override');
 const flash=require('connect-flash');
 const config=require('./config');
-const data=require('./sql_models/Data');
+const Data=require('./sql_models/Data');
 const cookieParser=require('cookie-parser');
 const session=require('express-session');
 const passport=require('passport');
 require('dotenv').config;
+const mysql=require('mysql2');
+const secret=config.session_secret;
 
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
@@ -18,12 +20,11 @@ app.set('view engine','ejs');
 app.use(methodOverride('method'));
 
 app.use(session({
-    secret: process.env.SESSION_SECRET,
+    secret: secret,
     resave: true,
     saveUninitialized: true,
-    cookie:{expires:new Date(Date.now()+1000*3600*24*100)},
+    cookie:{secure:true,expires:new Date(Date.now()+1000*3600*24*100)},
 }))
-
 app.use(flash());
 require('./passport/passport');
 app.use(passport.initialize());

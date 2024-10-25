@@ -2,39 +2,26 @@ const Controllers=require('./Controllers');
 const {check,validationResult}=require('express-validator');
 const passport=require('passport');
 
-class AuthController extends Controllers{
-     async loginForm(req,res,next){
-       try {
-        res.render('auth/login');
-       } catch (error) {
-        next(error)
-       }
+class authControllers extends Controllers{
+
+    async registerForm(req,res,next){
+    try{
+        res.render('auth/register');
     }
-     async registerForm(req,res,next){
-        try {
-            res.render('auth/register')
-        } catch (error) {
-            next(error)
+    catch(err){
+            next(err);
         }
     }
 
-     async register(req,res,next){
-        try {
-            const errors=validationResult(req);
-            if(!errors.isEmpty()){
-                req.flash("errors",errors.array());
-                return res.redirect('auth/register');
-            }
-                passport.authenticate('local.register',
-                {
-                    successRedirect:'/dashboard',
-                    failureRedirect:'/auth/register',
-                    failureFlash:true
-                })(req,res,next)
-        } catch (error) {
-            next(error)
-        }
+    async loginForm(req,res,next){
+    try{
+        res.render('auth/login');
     }
+    catch(err){
+            next(err);
+            }
+        }
+
     async login(req,res,next){
         try{
             const errors=validationResult(req)
@@ -53,6 +40,25 @@ class AuthController extends Controllers{
             next(err);
             }
         }
+
+    async register(req,res,next){
+        try{
+            const errors=validationResult(req)
+            if(!errors.isEmpty()){
+                const myErrors=errors.array().map(err=>err.msg);
+                req.flash("errors",myErrors);
+                return res.redirect('/auth/register');
+            }
+            passport.authenticate('local.register',{
+                successRedirect:'/dashboard',
+                failureRedirect:'/auth/register',
+                failureFlash:true
+            })(req,res,next)
+    }
+    catch(err){
+            next(err);
+            }
+        }
 }
 
-module.exports=new AuthController
+module.exports=new authControllers;
